@@ -24,7 +24,7 @@ def main():
     
     ele_curr = root
     for path, directories, files in os.walk(root_path):
-        group_path = re.sub('^\\\\', '', path.replace(root_path, ''))
+        group_path = re.sub('^\\' + os.path.sep, '', path.replace(root_path, ''))
         if group_path != '':
             # the root path has no name, so skipped.
             ele_curr = find_named_element(root, group_path)
@@ -33,7 +33,7 @@ def main():
         for file in files:
             # This statement is specified for my tool.
             # $PROJ_DIR$ is context root for my tool.
-            ele_curr.append(create_new_file(os.path.join('$PROJ_DIR$\\' + group_path, file)))
+            ele_curr.append(create_new_file(os.path.join('$PROJ_DIR$', group_path, file)))
     
     print('Convertion Completed!')
     
@@ -43,7 +43,7 @@ def main():
 
 # Define functions
 def find_named_element(ele, name):
-    name_list = name.split('\\')
+    name_list = name.split(os.path.sep)
     ele_curr = ele
     for target in name_list:
         ele_pre = ele_curr
